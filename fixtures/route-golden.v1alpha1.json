@@ -1,0 +1,61 @@
+{
+  "format": "capctl.dev/route-golden/v1alpha1",
+  "catalog": "catalog.v1alpha1.json",
+  "policy": "policy.v1alpha1.json",
+  "cases": [
+    {
+      "id": "english-session",
+      "query": "resume session",
+      "expectedDecision": "selected",
+      "expectedMatches": ["fixture/session-resume"]
+    },
+    {
+      "id": "cjk-session",
+      "query": "恢复会话并接续上下文",
+      "expectedDecision": "selected",
+      "expectedMatches": ["fixture/session-resume"]
+    },
+    {
+      "id": "architecture-review",
+      "query": "架构审查 failure recovery",
+      "expectedDecision": "selected",
+      "expectedMatches": ["fixture/systems-design-review"]
+    },
+    {
+      "id": "catalog-budget",
+      "query": "skill catalog context budget",
+      "expectedDecision": "selected",
+      "expectedMatches": ["fixture/find-skills"]
+    },
+    {
+      "id": "isolated-writes",
+      "query": "parallel writes worktree isolation",
+      "expectedDecision": "selected",
+      "expectedMatches": ["fixture/git-worktree"]
+    },
+    {
+      "id": "browser-network",
+      "query": "浏览器诊断 inspect network",
+      "expectedDecision": "selected",
+      "expectedMatches": ["fixture/browser-debug"]
+    },
+    {
+      "id": "explicit-browser",
+      "query": "fixture/browser-debug",
+      "expectedDecision": "selected",
+      "expectedMatches": [
+        "fixture/browser-debug",
+        "fixture/git-worktree",
+        "fixture/find-skills",
+        "fixture/systems-design-review",
+        "fixture/session-resume"
+      ]
+    },
+    {
+      "id": "unseen-no-match",
+      "query": "quantum banana",
+      "expectedDecision": "noMatch",
+      "expectedMatches": []
+    }
+  ]
+}

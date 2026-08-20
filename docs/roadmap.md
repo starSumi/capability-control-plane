@@ -11,9 +11,14 @@
 - [x] Rust semantic SSOT with checked JSON Schema and TypeScript projections.
 - [x] honest working-set contract: `N <= 10,000` bounded admission, with
   `topK` bounded output rather than an O(K) score workspace claim.
+- [x] first reviewed root commit (`c830972`) with no remote or runtime
+  authority; this is a reproducible baseline, not a release.
 
 ## V1.1: evidence before integration
 
+- [ ] run hosted Linux/Windows/macOS CI on the committed baseline;
+- [x] add byte-compared cross-platform route-golden fan-in (hosted execution
+  remains pending);
 - [ ] add larger held-out routing fixtures with provenance;
 - [ ] add shadow event schema and replay evaluator, still non-mutating;
 - [ ] calibrate thresholds from measurements rather than magic confidence;

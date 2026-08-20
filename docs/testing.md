@@ -20,8 +20,10 @@ Tests are layered so a green unit test cannot be mistaken for production proof.
    panic, execute, widen permissions, or produce nondeterministic output.
 5. **Cross-platform**: Linux, Windows, and macOS CI are configured to run the
    locked workspace tests. Any cross-platform determinism claim additionally
-   requires route-golden fan-in and byte comparison. Windows path behavior is a
-   first-class contract, not an afterthought.
+   requires route-golden fan-in and byte comparison. The frozen
+   `fixtures/route-golden.v1alpha1.json` corpus is rendered by the pure engine
+   example and compared byte-for-byte by the `route-golden-fan-in` CI job.
+   Windows path behavior is a first-class contract, not an afterthought.
 6. **Adversarial**: injection-looking descriptions, shell metacharacters,
    path encodings, oversized Unicode, duplicate resource versions, and hostile
    provider labels remain data and cannot become commands.

@@ -18,6 +18,12 @@ just bench-smoke # one iteration per benchmark, fast regression check
 just bench       # full local measurement
 ```
 
+The cross-platform route contract is a separate deterministic artifact, not a
+latency benchmark. Run `cargo run -p capability-engine --example route-golden
+--locked` to render the fixture-backed JSON. Hosted CI renders it on Linux,
+Windows, and macOS and performs a byte comparison in a fan-in job. The output
+intentionally excludes host paths, timestamps, locale, and raw query text.
+
 Every published result must include:
 
 - Git commit and `Cargo.lock` digest;
@@ -31,5 +37,6 @@ real adapter workload supplies a baseline and an owner accepts the SLO.
 
 The current development-only Windows baseline is recorded in
 [`benchmark-results/2026-08-20-windows-i5-1235u.md`](../benchmark-results/2026-08-20-windows-i5-1235u.md).
-It is attached to a content snapshot because the repository has no first commit;
-it must be rerun against a commit before it can support a release claim.
+It was measured before the first commit and remains a development baseline;
+rerun it against the committed tree and the future cross-platform golden corpus
+before using it in any release or SLO claim.
