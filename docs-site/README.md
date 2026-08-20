@@ -9,7 +9,8 @@ The site uses the technology and public compatibility surface proven by
 [starSumi/sumi-docs](https://github.com/starSumi/sumi-docs):
 
 - Astro and Starlight render the static human site.
-- One reviewed catalog drives navigation and the machine document list.
+- One reviewed catalog drives navigation, human source-to-route mapping, and the
+  machine document list.
 - A deterministic build step publishes strict Sumi Docs manifest v1 at
   `dist/_mcp/sumi-docs-manifest.json` together with raw canonical documents.
 - The Sumi Docs MCP server remains an external, stateless, read-only consumer.
@@ -39,10 +40,12 @@ Alternatives considered:
 ## Lifecycle And Ownership
 
 Canonical product documents remain in the repository root and `docs/`.
-Starlight pages in `src/content/docs/` are thin navigation pages that link to
-the build-time raw projection instead of copying those narratives.
-`src/content-catalog.mjs` is the single owner of site navigation and projected
-document membership. `.generated/` and `dist/` are disposable derived state.
+`src/content-catalog.mjs` maps each reviewed source to a human route and the raw
+machine projection. The build creates disposable Starlight inputs under
+`.generated/content/` by adding catalog frontmatter and removing the source H1;
+the remaining body is preserved. Raw source bytes and
+`sumi-docs-routes.json` are published under `.generated/public/_mcp/`.
+`.generated/` and `dist/` are derived state and are never authored directly.
 
 The docs-site owner updates `upstream.lock.json` only after rechecking the
 upstream remote, branch, commit, license, package manifests, build commands, and

@@ -16,7 +16,7 @@ const site = process.env.SITE_URL;
 export default defineConfig({
   ...(site ? { site } : {}),
   base,
-  publicDir: ".generated",
+  publicDir: ".generated/public",
   integrations: [
     starlight({
       title: "Capability Control Plane",
