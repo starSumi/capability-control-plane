@@ -1,0 +1,16 @@
+Finished `bench` profile [optimized] target(s) in 0.81s
+Running benches\routing.rs (target\release\deps\routing-03e4408bb1a7b813.exe)
+Timer precision: 100 ns
+routing         fastest       | slowest       | median        | mean          | samples | iters
+build_index
+32        428.8 us      | 983.1 us      | 754 us        | 670.3 us      | 100 | 100
+256       3.726 ms      | 8.621 ms      | 5.23 ms       | 5.351 ms      | 100 | 100
+412       5.928 ms      | 13.66 ms      | 6.906 ms      | 7.419 ms      | 100 | 100
+4096      69.87 ms      | 230.9 ms      | 83.21 ms      | 93.51 ms      | 100 | 100
+10000     179.3 ms      | 664.9 ms      | 214.5 ms      | 253.1 ms      | 100 | 100
+warm_route
+32        6.899 us      | 118.9 us      | 7.099 us      | 8.865 us      | 100 | 100
+256       28.79 us      | 42.69 us      | 29.74 us      | 30.17 us      | 100 | 100
+412       41.79 us      | 67.09 us      | 42.59 us      | 43.12 us      | 100 | 100
+4096      380.6 us      | 859.7 us      | 395.7 us      | 466.6 us      | 100 | 100
+10000     970.8 us      | 4.628 ms      | 1.221 ms      | 1.528 ms      | 100 | 100
