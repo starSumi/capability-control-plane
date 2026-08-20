@@ -1,0 +1,150 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "RouteResult",
+  "type": "object",
+  "properties": {
+    "apiVersion": {
+      "$ref": "#/$defs/ApiVersion"
+    },
+    "catalogDigest": {
+      "type": "string",
+      "maxLength": 64,
+      "minLength": 64,
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "decision": {
+      "$ref": "#/$defs/RouteDecision"
+    },
+    "kind": {
+      "$ref": "#/$defs/RouteResultKind"
+    },
+    "matches": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/RouteMatch"
+      },
+      "maxItems": 100
+    },
+    "policy": {
+      "$ref": "#/$defs/PolicyRef"
+    },
+    "resourceVersion": {
+      "type": "integer",
+      "format": "uint32",
+      "minimum": 1
+    },
+    "selector": {
+      "$ref": "#/$defs/SelectorRef"
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "apiVersion",
+    "kind",
+    "resourceVersion",
+    "catalogDigest",
+    "policy",
+    "selector",
+    "decision",
+    "matches"
+  ],
+  "$defs": {
+    "ApiVersion": {
+      "type": "string",
+      "enum": [
+        "capctl.dev/v1alpha1"
+      ]
+    },
+    "PolicyRef": {
+      "type": "object",
+      "properties": {
+        "digest": {
+          "type": "string",
+          "maxLength": 64,
+          "minLength": 64,
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "generation": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 1
+        },
+        "name": {
+          "type": "string",
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[a-z0-9](?:[a-z0-9._-]*[a-z0-9])?(?:/[a-z0-9](?:[a-z0-9._-]*[a-z0-9])?)*$"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "generation",
+        "digest"
+      ]
+    },
+    "RouteDecision": {
+      "type": "string",
+      "enum": [
+        "selected",
+        "ambiguous",
+        "noMatch"
+      ]
+    },
+    "RouteMatch": {
+      "type": "object",
+      "properties": {
+        "capabilityId": {
+          "type": "string",
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[a-z0-9](?:[a-z0-9._-]*[a-z0-9])?(?:/[a-z0-9](?:[a-z0-9._-]*[a-z0-9])?)*$"
+        },
+        "scoreMicros": {
+          "description": "Quantized score in millionths; this is ordering evidence, not probability.",
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "capabilityId",
+        "scoreMicros"
+      ]
+    },
+    "RouteResultKind": {
+      "type": "string",
+      "enum": [
+        "RouteResult"
+      ]
+    },
+    "SelectorRef": {
+      "type": "object",
+      "properties": {
+        "configDigest": {
+          "type": "string",
+          "maxLength": 64,
+          "minLength": 64,
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "name": {
+          "type": "string",
+          "maxLength": 128,
+          "minLength": 1
+        },
+        "version": {
+          "type": "string",
+          "maxLength": 64,
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "version",
+        "configDigest"
+      ]
+    }
+  }
+}

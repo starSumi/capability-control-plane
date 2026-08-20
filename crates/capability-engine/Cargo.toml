@@ -1,0 +1,27 @@
+[package]
+name = "capability-engine"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+publish = false
+
+[dependencies]
+blake3.workspace = true
+capability-protocol.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+thiserror.workspace = true
+unicode-normalization.workspace = true
+
+[dev-dependencies]
+divan.workspace = true
+proptest.workspace = true
+
+[[bench]]
+name = "routing"
+harness = false
+
+[lints]
+workspace = true
+

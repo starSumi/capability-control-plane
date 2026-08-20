@@ -1,0 +1,20 @@
+name: Feature request
+description: Propose a bounded capability with evidence and an owner.
+title: "feature: "
+labels: [enhancement]
+body:
+  - type: textarea
+    id: workload
+    attributes:
+      label: Workload and failure mode
+      description: What measured problem does this solve, and what is out of scope?
+    validations:
+      required: true
+  - type: textarea
+    id: boundary
+    attributes:
+      label: Trust and ownership boundary
+      description: Name the desired-state owner, authority owner, and rollback.
+    validations:
+      required: true
+

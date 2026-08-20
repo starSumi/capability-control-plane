@@ -1,0 +1,18 @@
+{
+  "apiVersion": "capctl.dev/v1alpha1",
+  "kind": "ObservedCatalog",
+  "observedResourceVersion": 6,
+  "items": [
+    {
+      "name": "fixture/session-resume",
+      "generation": 2,
+      "digest": "0000000000000000000000000000000000000000000000000000000000000000"
+    },
+    {
+      "name": "fixture/retained-orphan",
+      "generation": 1,
+      "digest": "1111111111111111111111111111111111111111111111111111111111111111"
+    }
+  ]
+}
+

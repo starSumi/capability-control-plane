@@ -1,0 +1,30 @@
+name: Bug report
+description: Report a reproducible defect in the protocol, engine, or CLI.
+title: "bug: "
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Do not include secrets, personal data, or undisclosed security details.
+  - type: input
+    id: revision
+    attributes:
+      label: Revision and toolchain
+      description: Include commit, OS, and `rustc --version`.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction
+      description: Give the exact command, input class, and observed output.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+

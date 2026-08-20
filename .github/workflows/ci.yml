@@ -1,0 +1,97 @@
+name: ci
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  quality:
+    name: quality
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Format
+        run: cargo fmt --all -- --check
+      - name: Check
+        run: cargo check --workspace --all-targets --locked
+      - name: Generated contract drift
+        run: cargo run -p xtask --locked -- codegen --check
+      - name: Clippy
+        run: cargo clippy --workspace --all-targets --all-features --locked -- -D warnings
+      - name: Install nextest
+        uses: taiki-e/install-action@44c6d64aa62cd779e873306675c7a58e86d6d532 # v2.62.49
+        with:
+          tool: cargo-nextest
+      - name: Test
+        run: cargo nextest run --workspace --all-features --locked
+      - name: Benchmark smoke
+        run: cargo bench -p capability-engine --bench routing -- --test
+
+  portable:
+    name: portable-${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-2025, macos-15]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Test
+        run: cargo test --workspace --all-features --locked
+
+  docs-and-client:
+    name: docs-and-client
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version-file: docs-site/.node-version
+      - name: Install the pinned package manager
+        run: |
+          npm install --global --ignore-scripts --registry https://registry.npmjs.org pnpm@10.26.0
+          pnpm --version
+      - name: Install exact documentation dependencies
+        run: pnpm --dir docs-site install --frozen-lockfile --ignore-scripts
+      - name: Verify human and machine documentation
+        run: pnpm --dir docs-site run verify
+      - name: Audit production documentation dependencies
+        run: pnpm --dir docs-site audit --prod --audit-level high --registry https://registry.npmjs.org
+
+  supply-chain:
+    name: supply-chain
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Cargo deny
+        uses: EmbarkStudios/cargo-deny-action@82eb9f621fbc699dd0918f3ea06864c14cc84246 # v2
+        with:
+          command: check
+      - name: Cargo audit
+        run: cargo install --locked cargo-audit@0.22.2 && cargo audit

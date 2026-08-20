@@ -1,0 +1,17 @@
+Command: cargo bench -p capability-engine --bench routing --locked --offline
+Observed: 2026-08-20 20:02-20:03 Asia/Shanghai
+Timer precision: 100 ns
+
+routing         fastest       slowest       median        mean          samples  iters
+build_index
+  32            419.4 us      783.5 us      439.8 us      460.9 us      100      100
+  256           3.644 ms      7.702 ms      3.795 ms      4.355 ms      100      100
+  412           5.883 ms      16.41 ms      6.303 ms      6.811 ms      100      100
+  4096          63.98 ms      94.01 ms      68.64 ms      69.29 ms      100      100
+  10000         164.1 ms      192.7 ms      170.6 ms      171.2 ms      100      100
+warm_route
+  32            6.799 us      120.8 us      7.099 us      8.921 us      100      100
+  256           28.99 us      144.2 us      29.59 us      33.17 us      100      100
+  412           41.59 us      61.49 us      41.99 us      42.43 us      100      100
+  4096          377.6 us      1.035 ms      382.5 us      411.1 us      100      100
+  10000         912.3 us      2.189 ms      971.6 us      1.025 ms      100      100

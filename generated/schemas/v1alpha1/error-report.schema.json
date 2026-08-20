@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ErrorReport",
+  "type": "object",
+  "properties": {
+    "apiVersion": {
+      "$ref": "#/$defs/ApiVersion"
+    },
+    "code": {
+      "$ref": "#/$defs/ErrorCode"
+    },
+    "kind": {
+      "$ref": "#/$defs/ErrorReportKind"
+    },
+    "message": {
+      "type": "string",
+      "maxLength": 4096
+    },
+    "ok": {
+      "type": "boolean"
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "apiVersion",
+    "kind",
+    "ok",
+    "code",
+    "message"
+  ],
+  "$defs": {
+    "ApiVersion": {
+      "type": "string",
+      "enum": [
+        "capctl.dev/v1alpha1"
+      ]
+    },
+    "ErrorCode": {
+      "type": "string",
+      "enum": [
+        "invalid_policy",
+        "invalid_generation",
+        "invalid_identifier",
+        "duplicate_capability",
+        "authority_denied",
+        "permission_denied",
+        "resource_limit_exceeded",
+        "invalid_query",
+        "stale_generation",
+        "invalid_digest",
+        "invalid_root",
+        "invalid_path",
+        "indirect_path",
+        "document_too_large",
+        "io_error",
+        "invalid_json",
+        "output_error"
+      ]
+    },
+    "ErrorReportKind": {
+      "type": "string",
+      "enum": [
+        "ErrorReport"
+      ]
+    }
+  }
+}

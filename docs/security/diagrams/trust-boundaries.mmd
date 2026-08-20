@@ -1,0 +1,13 @@
+flowchart LR
+  Q[Untrusted intent/query] --> P[Strict protocol]
+  D[Desired catalog + policy] --> A[Admission]
+  P --> E[Pure engine]
+  A --> E
+  E --> R[Route decision]
+  E --> C[Reconcile plan]
+  C -. future explicit adapter .-> V[Provider authority]
+  V -. future bounded action .-> X[External executor]
+  X -. observed evidence .-> O[Status / observation]
+  O --> E
+  X -. never becomes desired truth .-> D
+

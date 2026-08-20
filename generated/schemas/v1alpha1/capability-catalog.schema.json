@@ -1,0 +1,210 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "CapabilityCatalog",
+  "type": "object",
+  "properties": {
+    "apiVersion": {
+      "$ref": "#/$defs/ApiVersion"
+    },
+    "items": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/Capability"
+      },
+      "maxItems": 10000
+    },
+    "kind": {
+      "$ref": "#/$defs/CatalogKind"
+    },
+    "resourceVersion": {
+      "type": "integer",
+      "format": "uint32",
+      "minimum": 1
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "apiVersion",
+    "kind",
+    "resourceVersion",
+    "items"
+  ],
+  "$defs": {
+    "ApiVersion": {
+      "type": "string",
+      "enum": [
+        "capctl.dev/v1alpha1"
+      ]
+    },
+    "AuthorityRef": {
+      "type": "object",
+      "properties": {
+        "package": {
+          "type": "string",
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[a-z0-9](?:[a-z0-9._-]*[a-z0-9])?(?:/[a-z0-9](?:[a-z0-9._-]*[a-z0-9])?)*$"
+        },
+        "provider": {
+          "type": "string",
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[a-z0-9](?:[a-z0-9._-]*[a-z0-9])?(?:/[a-z0-9](?:[a-z0-9._-]*[a-z0-9])?)*$"
+        },
+        "resource": {
+          "type": "string",
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[a-z0-9](?:[a-z0-9._-]*[a-z0-9])?(?:/[a-z0-9](?:[a-z0-9._-]*[a-z0-9])?)*$"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "provider",
+        "package",
+        "resource"
+      ]
+    },
+    "Capability": {
+      "type": "object",
+      "properties": {
+        "metadata": {
+          "$ref": "#/$defs/CapabilityMetadata"
+        },
+        "spec": {
+          "$ref": "#/$defs/CapabilitySpec"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "metadata",
+        "spec"
+      ]
+    },
+    "CapabilityMetadata": {
+      "type": "object",
+      "properties": {
+        "generation": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 1
+        },
+        "labels": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string",
+            "maxLength": 65536,
+            "minLength": 1
+          },
+          "default": {},
+          "maxProperties": 128,
+          "propertyNames": {
+            "type": "string",
+            "maxLength": 65536,
+            "minLength": 1
+          }
+        },
+        "name": {
+          "type": "string",
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[a-z0-9](?:[a-z0-9._-]*[a-z0-9])?(?:/[a-z0-9](?:[a-z0-9._-]*[a-z0-9])?)*$"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "generation"
+      ]
+    },
+    "CapabilitySpec": {
+      "type": "object",
+      "properties": {
+        "authority": {
+          "$ref": "#/$defs/AuthorityRef"
+        },
+        "description": {
+          "type": "string",
+          "maxLength": 65536,
+          "minLength": 1
+        },
+        "load": {
+          "$ref": "#/$defs/LoadSpec"
+        },
+        "permissions": {
+          "type": "array",
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Permission"
+          },
+          "uniqueItems": true
+        },
+        "tags": {
+          "type": "array",
+          "default": [],
+          "items": {
+            "type": "string",
+            "maxLength": 65536,
+            "minLength": 1
+          },
+          "maxItems": 256
+        },
+        "triggers": {
+          "type": "array",
+          "default": [],
+          "items": {
+            "type": "string",
+            "maxLength": 65536,
+            "minLength": 1
+          },
+          "maxItems": 512
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "description",
+        "authority",
+        "load"
+      ]
+    },
+    "CatalogKind": {
+      "type": "string",
+      "enum": [
+        "CapabilityCatalog"
+      ]
+    },
+    "LoadMode": {
+      "type": "string",
+      "enum": [
+        "metadataOnly",
+        "thinRouter",
+        "fullWorkflow"
+      ]
+    },
+    "LoadSpec": {
+      "type": "object",
+      "properties": {
+        "estimatedTokens": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0
+        },
+        "mode": {
+          "$ref": "#/$defs/LoadMode"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "mode",
+        "estimatedTokens"
+      ]
+    },
+    "Permission": {
+      "type": "string",
+      "enum": [
+        "readMetadata",
+        "readContent"
+      ]
+    }
+  }
+}

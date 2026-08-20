@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ObservedCatalog",
+  "type": "object",
+  "properties": {
+    "apiVersion": {
+      "$ref": "#/$defs/ApiVersion"
+    },
+    "items": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/ObservedCapability"
+      },
+      "maxItems": 10000
+    },
+    "kind": {
+      "$ref": "#/$defs/ObservedKind"
+    },
+    "observedResourceVersion": {
+      "type": "integer",
+      "format": "uint32",
+      "minimum": 0
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "apiVersion",
+    "kind",
+    "observedResourceVersion",
+    "items"
+  ],
+  "$defs": {
+    "ApiVersion": {
+      "type": "string",
+      "enum": [
+        "capctl.dev/v1alpha1"
+      ]
+    },
+    "ObservedCapability": {
+      "type": "object",
+      "properties": {
+        "digest": {
+          "type": "string",
+          "maxLength": 64,
+          "minLength": 64,
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "generation": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 1
+        },
+        "name": {
+          "type": "string",
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[a-z0-9](?:[a-z0-9._-]*[a-z0-9])?(?:/[a-z0-9](?:[a-z0-9._-]*[a-z0-9])?)*$"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "generation",
+        "digest"
+      ]
+    },
+    "ObservedKind": {
+      "type": "string",
+      "enum": [
+        "ObservedCatalog"
+      ]
+    }
+  }
+}

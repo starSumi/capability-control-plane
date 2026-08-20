@@ -1,0 +1,11 @@
+flowchart TD
+  S[Read desired generation and digest] --> O[Observe actual]
+  O --> F[Pure diff]
+  F -->|stale precondition| R[Abort and replan]
+  F -->|no action| V[Verify observation]
+  F -->|future action| A[Act at safe boundary]
+  A --> V
+  V -->|matches desired| P[Publish derived status]
+  V -->|mismatch| R
+  P --> Z[Restartable; recompute after crash]
+

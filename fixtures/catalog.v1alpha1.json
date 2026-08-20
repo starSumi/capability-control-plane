@@ -1,0 +1,103 @@
+{
+  "apiVersion": "capctl.dev/v1alpha1",
+  "kind": "CapabilityCatalog",
+  "resourceVersion": 7,
+  "items": [
+    {
+      "metadata": {
+        "name": "fixture/session-resume",
+        "generation": 3,
+        "labels": { "domain": "lifecycle" }
+      },
+      "spec": {
+        "description": "Recover a historical Codex or Claude session and reconstruct its evidence-bounded timeline.",
+        "triggers": ["resume session", "recover conversation", "恢复会话", "接续上下文"],
+        "tags": ["session", "timeline", "handoff"],
+        "authority": {
+          "provider": "fixture",
+          "package": "local-skills",
+          "resource": "session-resume"
+        },
+        "load": { "mode": "thinRouter", "estimatedTokens": 180 },
+        "permissions": ["readMetadata", "readContent"]
+      }
+    },
+    {
+      "metadata": {
+        "name": "fixture/systems-design-review",
+        "generation": 2,
+        "labels": { "domain": "architecture" }
+      },
+      "spec": {
+        "description": "Challenge a system design against workload, platform semantics, failure recovery, and measured evidence.",
+        "triggers": ["review architecture", "design critique", "架构审查", "failure recovery"],
+        "tags": ["architecture", "reliability", "evidence"],
+        "authority": {
+          "provider": "fixture",
+          "package": "local-skills",
+          "resource": "systems-design-review"
+        },
+        "load": { "mode": "thinRouter", "estimatedTokens": 210 },
+        "permissions": ["readMetadata", "readContent"]
+      }
+    },
+    {
+      "metadata": {
+        "name": "fixture/find-skills",
+        "generation": 4,
+        "labels": { "domain": "catalog" }
+      },
+      "spec": {
+        "description": "Govern the central skill catalog, activation policy, loader projections, and post-use evolution.",
+        "triggers": ["find a skill", "skill catalog", "技能路由", "context budget"],
+        "tags": ["skill", "catalog", "projection"],
+        "authority": {
+          "provider": "fixture",
+          "package": "local-skills",
+          "resource": "find-skills"
+        },
+        "load": { "mode": "metadataOnly", "estimatedTokens": 120 },
+        "permissions": ["readMetadata"]
+      }
+    },
+    {
+      "metadata": {
+        "name": "fixture/git-worktree",
+        "generation": 1,
+        "labels": { "domain": "git" }
+      },
+      "spec": {
+        "description": "Create and govern isolated Git worktrees for parallel writable implementation lanes.",
+        "triggers": ["create worktree", "parallel writes", "隔离工作区"],
+        "tags": ["git", "isolation", "workflow"],
+        "authority": {
+          "provider": "fixture",
+          "package": "local-skills",
+          "resource": "git-worktree"
+        },
+        "load": { "mode": "metadataOnly", "estimatedTokens": 100 },
+        "permissions": ["readMetadata"]
+      }
+    },
+    {
+      "metadata": {
+        "name": "fixture/browser-debug",
+        "generation": 1,
+        "labels": { "domain": "frontend" }
+      },
+      "spec": {
+        "description": "Inspect browser console, DOM, network, screenshots, and visual evidence for web diagnosis.",
+        "triggers": ["debug browser", "inspect network", "浏览器诊断"],
+        "tags": ["browser", "frontend", "debug"],
+        "authority": {
+          "provider": "fixture",
+          "package": "local-skills",
+          "resource": "browser-debug"
+        },
+        "load": { "mode": "metadataOnly", "estimatedTokens": 100 },
+        "permissions": ["readMetadata"]
+      }
+    }
+  ]
+}
+

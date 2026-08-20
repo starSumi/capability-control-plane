@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "upstream": {
+    "repository": "https://github.com/starSumi/sumi-docs.git",
+    "branch": "main",
+    "commit": "adee6416e6c9376709d32bca615f4509da97200c",
+    "license": "MIT"
+  },
+  "compatibility": {
+    "humanSurface": "Astro 7.2.1 and Starlight 0.41.7",
+    "agentSurface": "strict Sumi Docs manifest v1",
+    "mcpSurface": "external read-only Sumi Docs MCP built from the pinned upstream source"
+  },
+  "verifiedOn": "2026-08-20"
+}

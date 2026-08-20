@@ -1,0 +1,26 @@
+{
+  "apiVersion": "capctl.dev/v1alpha1",
+  "kind": "CapabilityPolicy",
+  "metadata": {
+    "name": "local-read-policy",
+    "generation": 1
+  },
+  "spec": {
+    "allowedAuthorities": ["fixture"],
+    "allowedPermissions": ["readMetadata", "readContent"],
+    "limits": {
+      "maxCatalogItems": 1000,
+      "maxQueryBytes": 4096,
+      "maxQueryTerms": 512,
+      "maxFieldBytes": 4096,
+      "maxTriggersPerCapability": 32,
+      "maxTagsPerCapability": 32,
+      "maxLabelsPerCapability": 32,
+      "maxTermsPerCapability": 512,
+      "maxCatalogTerms": 100000,
+      "maxCatalogTextBytes": 1048576,
+      "maxTopK": 10,
+      "maxDocumentBytes": 1048576
+    }
+  }
+}

@@ -1,0 +1,193 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "CapabilityPolicy",
+  "type": "object",
+  "properties": {
+    "apiVersion": {
+      "$ref": "#/$defs/ApiVersion"
+    },
+    "kind": {
+      "$ref": "#/$defs/PolicyKind"
+    },
+    "metadata": {
+      "$ref": "#/$defs/PolicyMetadata"
+    },
+    "spec": {
+      "$ref": "#/$defs/PolicySpec"
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "apiVersion",
+    "kind",
+    "metadata",
+    "spec"
+  ],
+  "$defs": {
+    "ApiVersion": {
+      "type": "string",
+      "enum": [
+        "capctl.dev/v1alpha1"
+      ]
+    },
+    "Permission": {
+      "type": "string",
+      "enum": [
+        "readMetadata",
+        "readContent"
+      ]
+    },
+    "PolicyKind": {
+      "type": "string",
+      "enum": [
+        "CapabilityPolicy"
+      ]
+    },
+    "PolicyMetadata": {
+      "type": "object",
+      "properties": {
+        "generation": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 1
+        },
+        "name": {
+          "type": "string",
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[a-z0-9](?:[a-z0-9._-]*[a-z0-9])?(?:/[a-z0-9](?:[a-z0-9._-]*[a-z0-9])?)*$"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "generation"
+      ]
+    },
+    "PolicySpec": {
+      "type": "object",
+      "properties": {
+        "allowedAuthorities": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[a-z0-9](?:[a-z0-9._-]*[a-z0-9])?(?:/[a-z0-9](?:[a-z0-9._-]*[a-z0-9])?)*$"
+          },
+          "maxItems": 10000,
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "allowedPermissions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Permission"
+          },
+          "uniqueItems": true
+        },
+        "limits": {
+          "$ref": "#/$defs/ResourceLimits"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "allowedAuthorities",
+        "allowedPermissions",
+        "limits"
+      ]
+    },
+    "ResourceLimits": {
+      "type": "object",
+      "properties": {
+        "maxCatalogItems": {
+          "type": "integer",
+          "format": "uint32",
+          "maximum": 10000,
+          "minimum": 1
+        },
+        "maxCatalogTerms": {
+          "type": "integer",
+          "format": "uint32",
+          "maximum": 2000000,
+          "minimum": 1
+        },
+        "maxCatalogTextBytes": {
+          "type": "integer",
+          "format": "uint32",
+          "maximum": 8388608,
+          "minimum": 1
+        },
+        "maxDocumentBytes": {
+          "type": "integer",
+          "format": "uint32",
+          "maximum": 8388608,
+          "minimum": 1
+        },
+        "maxFieldBytes": {
+          "type": "integer",
+          "format": "uint32",
+          "maximum": 65536,
+          "minimum": 1
+        },
+        "maxLabelsPerCapability": {
+          "type": "integer",
+          "format": "uint32",
+          "maximum": 128,
+          "minimum": 1
+        },
+        "maxQueryBytes": {
+          "type": "integer",
+          "format": "uint32",
+          "maximum": 16384,
+          "minimum": 1
+        },
+        "maxQueryTerms": {
+          "type": "integer",
+          "format": "uint32",
+          "maximum": 4096,
+          "minimum": 1
+        },
+        "maxTagsPerCapability": {
+          "type": "integer",
+          "format": "uint32",
+          "maximum": 256,
+          "minimum": 1
+        },
+        "maxTermsPerCapability": {
+          "type": "integer",
+          "format": "uint32",
+          "maximum": 4096,
+          "minimum": 1
+        },
+        "maxTopK": {
+          "type": "integer",
+          "format": "uint32",
+          "maximum": 100,
+          "minimum": 1
+        },
+        "maxTriggersPerCapability": {
+          "type": "integer",
+          "format": "uint32",
+          "maximum": 512,
+          "minimum": 1
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "maxCatalogItems",
+        "maxQueryBytes",
+        "maxQueryTerms",
+        "maxFieldBytes",
+        "maxTriggersPerCapability",
+        "maxTagsPerCapability",
+        "maxLabelsPerCapability",
+        "maxTermsPerCapability",
+        "maxCatalogTerms",
+        "maxCatalogTextBytes",
+        "maxTopK",
+        "maxDocumentBytes"
+      ]
+    }
+  }
+}

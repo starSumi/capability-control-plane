@@ -1,0 +1,38 @@
+{
+  "schemaVersion": "security-hardening.v1",
+  "status": "implemented-baseline",
+  "scope": "v1-pure-kernel",
+  "sourceEvidence": [
+    {
+      "name": "OWASP Agentic Top 10 2026",
+      "url": "https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/",
+      "evidenceClass": "external-primary"
+    },
+    {
+      "name": "MITRE CWE Top 25 2025",
+      "url": "https://cwe.mitre.org/top25/archive/2025/2025_cwe_top25.html",
+      "evidenceClass": "external-primary"
+    },
+    {
+      "name": "SLSA v1.2",
+      "url": "https://slsa.dev/spec/v1.2/",
+      "evidenceClass": "external-primary"
+    }
+  ],
+  "controls": [
+    { "id": "AUTH-001", "name": "typed opaque authority", "status": "implemented" },
+    { "id": "AUTH-002", "name": "compiled policy ceilings", "status": "implemented" },
+    { "id": "INPUT-001", "name": "strict JSON and rooted reads", "status": "implemented" },
+    { "id": "STATE-001", "name": "policy-bound resource and item CAS preconditions", "status": "implemented" },
+    { "id": "PRIVACY-001", "name": "query material omitted from route output", "status": "implemented" },
+    { "id": "INPUT-002", "name": "policy validated before dependent allocation or I/O", "status": "implemented" },
+    { "id": "SUPPLY-001", "name": "locked and source-pinned dependencies", "status": "implemented" },
+    { "id": "SUPPLY-002", "name": "advisory scan", "status": "pending-ci-database" }
+  ],
+  "deferred": [
+    "provider adapter",
+    "execution sandbox",
+    "artifact signing",
+    "distributed coordination"
+  ]
+}

@@ -1,0 +1,184 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ReconcilePlan",
+  "type": "object",
+  "properties": {
+    "actions": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/ReconcileAction"
+      },
+      "maxItems": 10000
+    },
+    "apiVersion": {
+      "$ref": "#/$defs/ApiVersion"
+    },
+    "desiredDigest": {
+      "type": "string",
+      "maxLength": 64,
+      "minLength": 64,
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "desiredResourceVersion": {
+      "type": "integer",
+      "format": "uint32",
+      "minimum": 1
+    },
+    "kind": {
+      "$ref": "#/$defs/ReconcilePlanKind"
+    },
+    "observedResourceVersion": {
+      "type": "integer",
+      "format": "uint32",
+      "minimum": 0
+    },
+    "policy": {
+      "$ref": "#/$defs/PolicyRef"
+    },
+    "retainedOrphans": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 10000
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "apiVersion",
+    "kind",
+    "desiredResourceVersion",
+    "observedResourceVersion",
+    "desiredDigest",
+    "policy",
+    "actions",
+    "retainedOrphans"
+  ],
+  "$defs": {
+    "ApiVersion": {
+      "type": "string",
+      "enum": [
+        "capctl.dev/v1alpha1"
+      ]
+    },
+    "PolicyRef": {
+      "type": "object",
+      "properties": {
+        "digest": {
+          "type": "string",
+          "maxLength": 64,
+          "minLength": 64,
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "generation": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 1
+        },
+        "name": {
+          "type": "string",
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[a-z0-9](?:[a-z0-9._-]*[a-z0-9])?(?:/[a-z0-9](?:[a-z0-9._-]*[a-z0-9])?)*$"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "generation",
+        "digest"
+      ]
+    },
+    "ReconcileAction": {
+      "oneOf": [
+        {
+          "description": "Create is guarded by the absence of the capability in observed state.",
+          "type": "object",
+          "properties": {
+            "capabilityId": {
+              "type": "string",
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[a-z0-9](?:[a-z0-9._-]*[a-z0-9])?(?:/[a-z0-9](?:[a-z0-9._-]*[a-z0-9])?)*$"
+            },
+            "desiredDigest": {
+              "type": "string",
+              "maxLength": 64,
+              "minLength": 64,
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "desiredGeneration": {
+              "type": "integer",
+              "format": "uint32",
+              "minimum": 1
+            },
+            "kind": {
+              "type": "string",
+              "const": "create"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "capabilityId",
+            "desiredGeneration",
+            "desiredDigest"
+          ]
+        },
+        {
+          "description": "Update carries the complete compare-and-swap precondition.",
+          "type": "object",
+          "properties": {
+            "capabilityId": {
+              "type": "string",
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[a-z0-9](?:[a-z0-9._-]*[a-z0-9])?(?:/[a-z0-9](?:[a-z0-9._-]*[a-z0-9])?)*$"
+            },
+            "desiredDigest": {
+              "type": "string",
+              "maxLength": 64,
+              "minLength": 64,
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "desiredGeneration": {
+              "type": "integer",
+              "format": "uint32",
+              "minimum": 1
+            },
+            "expectedObservedDigest": {
+              "type": "string",
+              "maxLength": 64,
+              "minLength": 64,
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "expectedObservedGeneration": {
+              "type": "integer",
+              "format": "uint32",
+              "minimum": 1
+            },
+            "kind": {
+              "type": "string",
+              "const": "update"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "capabilityId",
+            "desiredGeneration",
+            "expectedObservedGeneration",
+            "expectedObservedDigest",
+            "desiredDigest"
+          ]
+        }
+      ]
+    },
+    "ReconcilePlanKind": {
+      "type": "string",
+      "enum": [
+        "ReconcilePlan"
+      ]
+    }
+  }
+}

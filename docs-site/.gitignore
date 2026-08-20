@@ -1,0 +1,6 @@
+.astro/
+.generated/
+dist/
+node_modules/
+*.log
+*.pid

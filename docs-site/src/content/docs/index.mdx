@@ -1,0 +1,32 @@
+---
+title: Capability Control Plane
+description: Evidence-bound capability admission, routing, and reconciliation.
+template: splash
+hero:
+  tagline: A fail-closed authority kernel for capability catalogs, policies, routes, and reconcile plans.
+  actions:
+    - text: Architecture
+      link: ./architecture/
+      variant: primary
+    - text: Security model
+      link: ./security/
+---
+
+import { Card, CardGrid } from "@astrojs/starlight/components";
+import CanonicalLink from "../../components/CanonicalLink.astro";
+
+The Rust V1 kernel remains pure and free of documentation, MCP, network, and UI runtime dependencies. This site is a separate projection of reviewed repository documents.
+
+<CardGrid>
+  <Card title="Pure kernel">
+    Admission, lexical routing, and level-triggered reconcile planning are pure library operations with fixed-target deterministic ordering.
+  </Card>
+  <Card title="Bounded authority">
+    Policies constrain providers, permissions, query size, document size, and result cardinality before work begins.
+  </Card>
+  <Card title="Measured evolution">
+    Benchmarks, denial fixtures, and reproducible commands define evidence. Status prose does not.
+  </Card>
+</CardGrid>
+
+The machine-readable projection is published at <CanonicalLink path="sumi-docs-manifest.json" label="the strict Sumi Docs manifest v1" /> and contains copies made at build time from the canonical repository documents.
