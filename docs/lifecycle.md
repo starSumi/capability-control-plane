@@ -20,7 +20,9 @@ author Rust semantics -> generate/check projections -> validate -> admit
   rollback is not reverse replay of side effects.
 
 V1 implements Draft/Validated and can emit a plan suitable for a future Shadow
-caller. It does not persist shadow state or perform promotion.
+caller. `capctl shadow` provides a non-mutating, provenance-bound replay surface
+for a seed held-out fixture; it does not persist shadow state or perform
+promotion.
 
 Protocol changes are authored once in `capability-protocol`. Generated Schema
 and client bindings are reproducible projections and must be current before a
@@ -48,3 +50,7 @@ Promotion is not a score in this repository. A future adapter must provide:
    claims;
 4. false-positive, no-match, ambiguity, p95 latency, and context-cost slices;
 5. rollback trigger, compatibility window, retention policy, and owner.
+
+The replay evaluator uses `GroundTruthSource::HeldOutReview` only for reviewed
+fixture cases. `NativeInvocation` and `ProviderRead` are reserved for future
+owner-authorized adapters and must not be asserted from caller-supplied actuals.

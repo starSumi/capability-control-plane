@@ -1,10 +1,11 @@
 use capability_protocol::{
     ApiVersion, AuthorityRef, Capability, CapabilityCatalog, CapabilityMetadata, CapabilityPolicy,
-    CapabilitySpec, CatalogKind, ErrorCode, ErrorReport, ErrorReportKind, LoadMode, LoadSpec,
-    ObservedCapability, ObservedCatalog, ObservedKind, Permission, PolicyKind, PolicyMetadata,
-    PolicyRef, PolicySpec, ProtocolDocumentKind, ReconcileAction, ReconcilePlan, ReconcilePlanKind,
-    ResourceLimits, RouteDecision, RouteMatch, RouteResult, RouteResultKind, SelectorRef,
-    ValidationReport, ValidationReportKind,
+    CapabilitySpec, CatalogKind, ErrorCode, ErrorReport, ErrorReportKind, GroundTruthSource,
+    LoadMode, LoadSpec, ObservedCapability, ObservedCatalog, ObservedKind, Permission, PolicyKind,
+    PolicyMetadata, PolicyRef, PolicySpec, ProtocolDocumentKind, ReconcileAction, ReconcilePlan,
+    ReconcilePlanKind, ResourceLimits, RouteDecision, RouteMatch, RouteResult, RouteResultKind,
+    SelectorRef, ShadowEvaluation, ShadowEvaluationKind, ShadowGroundTruth, ShadowObservation,
+    ShadowObservationKind, ValidationReport, ValidationReportKind,
 };
 use schemars::schema_for;
 use std::collections::{BTreeMap, BTreeSet};
@@ -66,6 +67,8 @@ fn schema(kind: ProtocolDocumentKind) -> Result<String, serde_json::Error> {
         ProtocolDocumentKind::Reconcile => pretty(&schema_for!(ReconcilePlan)),
         ProtocolDocumentKind::Validation => pretty(&schema_for!(ValidationReport)),
         ProtocolDocumentKind::Error => pretty(&schema_for!(ErrorReport)),
+        ProtocolDocumentKind::ShadowObservation => pretty(&schema_for!(ShadowObservation)),
+        ProtocolDocumentKind::ShadowEvaluation => pretty(&schema_for!(ShadowEvaluation)),
     }
 }
 
@@ -87,6 +90,8 @@ fn typescript() -> String {
         export_decl::<ReconcilePlanKind>(&config),
         export_decl::<ValidationReportKind>(&config),
         export_decl::<ErrorReportKind>(&config),
+        export_decl::<ShadowObservationKind>(&config),
+        export_decl::<ShadowEvaluationKind>(&config),
         export_decl::<Capability>(&config),
         export_decl::<CapabilityMetadata>(&config),
         export_decl::<CapabilitySpec>(&config),
@@ -104,6 +109,8 @@ fn typescript() -> String {
         export_decl::<RouteDecision>(&config),
         export_decl::<RouteMatch>(&config),
         export_decl::<ReconcileAction>(&config),
+        export_decl::<GroundTruthSource>(&config),
+        export_decl::<ShadowGroundTruth>(&config),
     ];
     declarations.extend(
         ProtocolDocumentKind::ALL

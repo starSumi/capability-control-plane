@@ -1,13 +1,13 @@
 mod store;
 
 use capability_engine::{
-    Denial, RouteConfig, RoutingIndex, admit, catalog_digest, plan_reconcile, policy_ref,
-    validate_policy,
+    Denial, RouteConfig, RoutingIndex, ShadowFixture, admit, catalog_digest, plan_reconcile,
+    policy_ref, replay_shadow, validate_policy,
 };
 use capability_protocol::{
     ApiVersion, COMPILED_LIMITS, CapabilityCatalog, CapabilityPolicy, ErrorCode, ErrorReport,
     ErrorReportKind, ObservedCatalog, ProtocolDocumentKind, ReconcilePlan, RouteResult,
-    ValidationReport, ValidationReportKind,
+    ShadowEvaluation, ShadowObservation, ValidationReport, ValidationReportKind,
 };
 use clap::{Parser, Subcommand};
 use schemars::schema_for;
@@ -72,6 +72,22 @@ enum Command {
         /// Root-relative observed snapshot JSON path.
         #[arg(long)]
         observed: PathBuf,
+        /// Root-relative policy JSON path.
+        #[arg(long)]
+        policy: PathBuf,
+    },
+    /// Replay a provenance-backed held-out route fixture without mutation.
+    Shadow {
+        /// Root directory containing all input documents.
+        #[arg(long, default_value = ".")]
+        root: PathBuf,
+        /// Root-relative held-out fixture JSON path. Queries are read only here
+        /// and are absent from the structured replay output.
+        #[arg(long)]
+        fixture: PathBuf,
+        /// Root-relative desired catalog JSON path.
+        #[arg(long)]
+        catalog: PathBuf,
         /// Root-relative policy JSON path.
         #[arg(long)]
         policy: PathBuf,
@@ -180,8 +196,31 @@ fn execute(cli: Cli) -> Result<Value, AppError> {
                 ProtocolDocumentKind::Reconcile => to_value(&schema_for!(ReconcilePlan))?,
                 ProtocolDocumentKind::Validation => to_value(&schema_for!(ValidationReport))?,
                 ProtocolDocumentKind::Error => to_value(&schema_for!(ErrorReport))?,
+                ProtocolDocumentKind::ShadowObservation => {
+                    to_value(&schema_for!(ShadowObservation))?
+                }
+                ProtocolDocumentKind::ShadowEvaluation => to_value(&schema_for!(ShadowEvaluation))?,
             };
             Ok(schema)
+        }
+        Command::Shadow {
+            root,
+            fixture,
+            catalog,
+            policy,
+        } => {
+            let (catalog, policy) = load_desired(&root, &catalog, &policy)?;
+            let store = RootedJsonStore::new(
+                &root,
+                usize::try_from(policy.spec.limits.max_document_bytes).map_err(|_| {
+                    Denial::new(
+                        ErrorCode::InvalidPolicy,
+                        "document limit is not representable",
+                    )
+                })?,
+            )?;
+            let fixture: ShadowFixture = store.read(&fixture)?;
+            to_value(&replay_shadow(&fixture, &catalog, &policy)?)
         }
     }
 }

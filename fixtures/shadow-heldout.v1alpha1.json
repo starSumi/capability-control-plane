@@ -1,0 +1,66 @@
+{
+  "format": "capctl.dev/shadow-heldout/v1alpha1",
+  "id": "heldout/routing-v1",
+  "catalog": "catalog.v1alpha1.json",
+  "policy": "policy.v1alpha1.json",
+  "selector": {
+    "name": "weighted-bm25",
+    "version": "1",
+    "config": {
+      "topK": 5,
+      "minScoreMicros": 100000,
+      "ambiguityBasisPoints": 9200
+    }
+  },
+  "provenance": {
+    "source": "manual-review",
+    "basis": "fixture catalog v1alpha1 reviewed against the product routing contract; seed-only held-out set",
+    "reviewedBy": "capability-control-plane-maintainers",
+    "reviewedAt": "2026-08-25"
+  },
+  "cases": [
+    {
+      "id": "heldout/session-paraphrase",
+      "query": "reconstruct the earlier conversation timeline",
+      "expectedDecision": "selected",
+      "expectedMatches": ["fixture/session-resume"]
+    },
+    {
+      "id": "heldout/architecture-recovery",
+      "query": "review an architecture change for failure recovery",
+      "expectedDecision": "selected",
+      "expectedMatches": ["fixture/systems-design-review"]
+    },
+    {
+      "id": "heldout/catalog-budget",
+      "query": "govern the skill catalog context budget",
+      "expectedDecision": "selected",
+      "expectedMatches": ["fixture/find-skills"]
+    },
+    {
+      "id": "heldout/worktree-parallel",
+      "query": "prepare isolated worktrees for parallel edits",
+      "expectedDecision": "selected",
+      "expectedMatches": ["fixture/git-worktree"]
+    },
+    {
+      "id": "heldout/browser-network",
+      "query": "inspect browser network requests",
+      "expectedDecision": "selected",
+      "expectedMatches": ["fixture/browser-debug"]
+    },
+    {
+      "id": "heldout/cjk-session",
+      "query": "请恢复历史会话并接续上下文",
+      "expectedDecision": "selected",
+      "expectedMatches": ["fixture/session-resume"]
+    },
+    {
+      "id": "heldout/no-match",
+      "query": "quantum banana",
+      "expectedDecision": "noMatch",
+      "expectedMatches": []
+    }
+  ],
+  "revision": "ca04bd54c94e07cb824b67cd37046b4e0043e9dabe435f7c734213569d7a4eaa"
+}

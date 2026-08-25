@@ -19,8 +19,8 @@
 - [ ] run hosted Linux/Windows/macOS CI on the committed baseline;
 - [x] add byte-compared cross-platform route-golden fan-in (hosted execution
   remains pending);
-- [ ] add larger held-out routing fixtures with provenance;
-- [ ] add shadow event schema and replay evaluator, still non-mutating;
+- [x] add a seed held-out routing fixture with canonical provenance binding;
+- [x] add shadow observation/evaluation schemas and a non-mutating replay CLI;
 - [ ] calibrate thresholds from measurements rather than magic confidence;
 - [ ] add property/fuzz and `cargo-llvm-cov` coverage artifact;
 - [ ] obtain cargo audit advisory database in CI and publish SBOM/provenance.

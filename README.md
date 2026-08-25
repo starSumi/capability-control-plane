@@ -63,6 +63,19 @@ cargo run -p capctl --locked -- reconcile `
   --policy fixtures/policy.v1alpha1.json
 ```
 
+Replay the seed held-out route corpus without executing or mutating anything:
+
+```powershell
+cargo run -p capctl --locked -- shadow `
+  --root fixtures `
+  --fixture shadow-heldout.v1alpha1.json `
+  --catalog catalog.v1alpha1.json `
+  --policy policy.v1alpha1.json
+```
+
+The replay output is privacy-safe and provenance-bound, but the checked-in
+seven-case corpus is seed evidence rather than a production routing SLO.
+
 Inputs must be root-relative strict JSON. Absolute paths, parent traversal,
 symlinks/reparse points, unknown fields, unknown permissions, oversized
 documents/catalog working sets, and untrusted authorities are denied. Route

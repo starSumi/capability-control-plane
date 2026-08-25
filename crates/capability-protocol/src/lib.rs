@@ -53,6 +53,8 @@ kind!(RouteResultKind, RouteResult);
 kind!(ReconcilePlanKind, ReconcilePlan);
 kind!(ValidationReportKind, ValidationReport);
 kind!(ErrorReportKind, ErrorReport);
+kind!(ShadowObservationKind, ShadowObservation);
+kind!(ShadowEvaluationKind, ShadowEvaluation);
 
 macro_rules! protocol_documents {
     ($($variant:ident => ($cli:literal, $schema_path:literal, $root:ty)),+ $(,)?) => {
@@ -125,6 +127,16 @@ protocol_documents! {
         "error",
         "generated/schemas/v1alpha1/error-report.schema.json",
         ErrorReport
+    ),
+    ShadowObservation => (
+        "shadow-observation",
+        "generated/schemas/v1alpha1/shadow-observation.schema.json",
+        ShadowObservation
+    ),
+    ShadowEvaluation => (
+        "shadow-evaluation",
+        "generated/schemas/v1alpha1/shadow-evaluation.schema.json",
+        ShadowEvaluation
     ),
 }
 
@@ -383,6 +395,7 @@ pub enum ErrorCode {
     IoError,
     InvalidJson,
     OutputError,
+    InvalidFixture,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -556,6 +569,92 @@ pub struct ErrorReport {
     pub code: ErrorCode,
     #[schemars(length(max = 4_096))]
     pub message: String,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize, JsonSchema, TS)]
+#[serde(rename_all = "camelCase")]
+pub enum GroundTruthSource {
+    HeldOutReview,
+    NativeInvocation,
+    ProviderRead,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, JsonSchema, TS)]
+#[serde(rename_all = "camelCase", deny_unknown_fields)]
+pub struct ShadowGroundTruth {
+    pub source: GroundTruthSource,
+    pub decision: RouteDecision,
+    #[schemars(
+        length(max = 100),
+        inner(
+            length(min = 1, max = 128),
+            regex(
+                pattern = "^[a-z0-9](?:[a-z0-9._-]*[a-z0-9])?(?:/[a-z0-9](?:[a-z0-9._-]*[a-z0-9])?)*$"
+            )
+        )
+    )]
+    pub capability_ids: Vec<String>,
+}
+
+/// Privacy-safe route evidence. The original query is deliberately absent.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, JsonSchema, TS)]
+#[serde(rename_all = "camelCase", deny_unknown_fields)]
+pub struct ShadowObservation {
+    pub api_version: ApiVersion,
+    pub kind: ShadowObservationKind,
+    #[schemars(
+        length(min = 1, max = 128),
+        regex(
+            pattern = "^[a-z0-9](?:[a-z0-9._-]*[a-z0-9])?(?:/[a-z0-9](?:[a-z0-9._-]*[a-z0-9])?)*$"
+        )
+    )]
+    pub case_id: String,
+    #[schemars(length(equal = 64), regex(pattern = "^[0-9a-f]{64}$"))]
+    pub catalog_digest: String,
+    pub policy: PolicyRef,
+    pub selector: SelectorRef,
+    pub predicted_decision: RouteDecision,
+    #[schemars(length(max = 100))]
+    pub predicted_matches: Vec<RouteMatch>,
+    pub ground_truth: ShadowGroundTruth,
+    #[schemars(range(max = 86_400_000))]
+    pub elapsed_micros: Option<u32>,
+}
+
+/// Aggregated replay evidence. It carries identities, never raw queries.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, JsonSchema, TS)]
+#[serde(rename_all = "camelCase", deny_unknown_fields)]
+pub struct ShadowEvaluation {
+    pub api_version: ApiVersion,
+    pub kind: ShadowEvaluationKind,
+    #[schemars(
+        length(min = 1, max = 128),
+        regex(
+            pattern = "^[a-z0-9](?:[a-z0-9._-]*[a-z0-9])?(?:/[a-z0-9](?:[a-z0-9._-]*[a-z0-9])?)*$"
+        )
+    )]
+    pub fixture_id: String,
+    #[schemars(length(equal = 64), regex(pattern = "^[0-9a-f]{64}$"))]
+    pub fixture_revision: String,
+    #[schemars(length(equal = 64), regex(pattern = "^[0-9a-f]{64}$"))]
+    pub catalog_digest: String,
+    pub policy: PolicyRef,
+    pub selector: SelectorRef,
+    pub ground_truth_source: GroundTruthSource,
+    #[schemars(range(min = 1))]
+    pub case_count: u32,
+    #[schemars(range(max = 10_000))]
+    pub exact_decision: u32,
+    #[schemars(range(max = 10_000))]
+    pub hit_at_1: u32,
+    #[schemars(range(max = 10_000))]
+    pub hit_at_3: u32,
+    #[schemars(range(max = 10_000))]
+    pub false_positive: u32,
+    #[schemars(range(max = 10_000))]
+    pub ambiguous: u32,
+    #[schemars(range(max = 10_000))]
+    pub no_match: u32,
 }
 
 /// Validate policy structure and compiled ceilings before a consumer uses any

@@ -1,0 +1,177 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ShadowEvaluation",
+  "description": "Aggregated replay evidence. It carries identities, never raw queries.",
+  "type": "object",
+  "properties": {
+    "ambiguous": {
+      "type": "integer",
+      "format": "uint32",
+      "maximum": 10000,
+      "minimum": 0
+    },
+    "apiVersion": {
+      "$ref": "#/$defs/ApiVersion"
+    },
+    "caseCount": {
+      "type": "integer",
+      "format": "uint32",
+      "minimum": 1
+    },
+    "catalogDigest": {
+      "type": "string",
+      "maxLength": 64,
+      "minLength": 64,
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "exactDecision": {
+      "type": "integer",
+      "format": "uint32",
+      "maximum": 10000,
+      "minimum": 0
+    },
+    "falsePositive": {
+      "type": "integer",
+      "format": "uint32",
+      "maximum": 10000,
+      "minimum": 0
+    },
+    "fixtureId": {
+      "type": "string",
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^[a-z0-9](?:[a-z0-9._-]*[a-z0-9])?(?:/[a-z0-9](?:[a-z0-9._-]*[a-z0-9])?)*$"
+    },
+    "fixtureRevision": {
+      "type": "string",
+      "maxLength": 64,
+      "minLength": 64,
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "groundTruthSource": {
+      "$ref": "#/$defs/GroundTruthSource"
+    },
+    "hitAt1": {
+      "type": "integer",
+      "format": "uint32",
+      "maximum": 10000,
+      "minimum": 0
+    },
+    "hitAt3": {
+      "type": "integer",
+      "format": "uint32",
+      "maximum": 10000,
+      "minimum": 0
+    },
+    "kind": {
+      "$ref": "#/$defs/ShadowEvaluationKind"
+    },
+    "noMatch": {
+      "type": "integer",
+      "format": "uint32",
+      "maximum": 10000,
+      "minimum": 0
+    },
+    "policy": {
+      "$ref": "#/$defs/PolicyRef"
+    },
+    "selector": {
+      "$ref": "#/$defs/SelectorRef"
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "apiVersion",
+    "kind",
+    "fixtureId",
+    "fixtureRevision",
+    "catalogDigest",
+    "policy",
+    "selector",
+    "groundTruthSource",
+    "caseCount",
+    "exactDecision",
+    "hitAt1",
+    "hitAt3",
+    "falsePositive",
+    "ambiguous",
+    "noMatch"
+  ],
+  "$defs": {
+    "ApiVersion": {
+      "type": "string",
+      "enum": [
+        "capctl.dev/v1alpha1"
+      ]
+    },
+    "GroundTruthSource": {
+      "type": "string",
+      "enum": [
+        "heldOutReview",
+        "nativeInvocation",
+        "providerRead"
+      ]
+    },
+    "PolicyRef": {
+      "type": "object",
+      "properties": {
+        "digest": {
+          "type": "string",
+          "maxLength": 64,
+          "minLength": 64,
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "generation": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 1
+        },
+        "name": {
+          "type": "string",
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[a-z0-9](?:[a-z0-9._-]*[a-z0-9])?(?:/[a-z0-9](?:[a-z0-9._-]*[a-z0-9])?)*$"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "generation",
+        "digest"
+      ]
+    },
+    "SelectorRef": {
+      "type": "object",
+      "properties": {
+        "configDigest": {
+          "type": "string",
+          "maxLength": 64,
+          "minLength": 64,
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "name": {
+          "type": "string",
+          "maxLength": 128,
+          "minLength": 1
+        },
+        "version": {
+          "type": "string",
+          "maxLength": 64,
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "version",
+        "configDigest"
+      ]
+    },
+    "ShadowEvaluationKind": {
+      "type": "string",
+      "enum": [
+        "ShadowEvaluation"
+      ]
+    }
+  }
+}

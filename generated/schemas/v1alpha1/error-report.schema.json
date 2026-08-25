@@ -54,7 +54,8 @@
         "document_too_large",
         "io_error",
         "invalid_json",
-        "output_error"
+        "output_error",
+        "invalid_fixture"
       ]
     },
     "ErrorReportKind": {

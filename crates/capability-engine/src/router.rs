@@ -5,7 +5,7 @@ use capability_protocol::{
     ApiVersion, CapabilityCatalog, CapabilityPolicy, ErrorCode, RouteDecision, RouteMatch,
     RouteResult, RouteResultKind, SelectorRef,
 };
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 use std::cmp::Ordering;
 use std::collections::{BTreeMap, BTreeSet};
 
@@ -21,7 +21,7 @@ const SELECTOR_NAME: &str = "weighted-bm25";
 const SELECTOR_VERSION: &str = "1";
 
 /// Runtime query bounds and deterministic, integer wire thresholds.
-#[derive(Debug, Clone, Copy, Serialize)]
+#[derive(Debug, Clone, Copy, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct RouteConfig {
     pub top_k: u32,

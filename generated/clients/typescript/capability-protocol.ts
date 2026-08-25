@@ -16,6 +16,10 @@ export type ValidationReportKind = "ValidationReport";
 
 export type ErrorReportKind = "ErrorReport";
 
+export type ShadowObservationKind = "ShadowObservation";
+
+export type ShadowEvaluationKind = "ShadowEvaluation";
+
 export type Capability = { metadata: CapabilityMetadata, spec: CapabilitySpec, };
 
 export type CapabilityMetadata = { name: string, generation: number, labels: { [key in string]: string }, };
@@ -38,7 +42,7 @@ export type ResourceLimits = { maxCatalogItems: number, maxQueryBytes: number, m
 
 export type ObservedCapability = { name: string, generation: number, digest: string, };
 
-export type ErrorCode = "invalid_policy" | "invalid_generation" | "invalid_identifier" | "duplicate_capability" | "authority_denied" | "permission_denied" | "resource_limit_exceeded" | "invalid_query" | "stale_generation" | "invalid_digest" | "invalid_root" | "invalid_path" | "indirect_path" | "document_too_large" | "io_error" | "invalid_json" | "output_error";
+export type ErrorCode = "invalid_policy" | "invalid_generation" | "invalid_identifier" | "duplicate_capability" | "authority_denied" | "permission_denied" | "resource_limit_exceeded" | "invalid_query" | "stale_generation" | "invalid_digest" | "invalid_root" | "invalid_path" | "indirect_path" | "document_too_large" | "io_error" | "invalid_json" | "output_error" | "invalid_fixture";
 
 export type PolicyRef = { name: string, generation: number, digest: string, };
 
@@ -54,6 +58,10 @@ scoreMicros: number, };
 
 export type ReconcileAction = { "kind": "create", capabilityId: string, desiredGeneration: number, desiredDigest: string, } | { "kind": "update", capabilityId: string, desiredGeneration: number, expectedObservedGeneration: number, expectedObservedDigest: string, desiredDigest: string, };
 
+export type GroundTruthSource = "heldOutReview" | "nativeInvocation" | "providerRead";
+
+export type ShadowGroundTruth = { source: GroundTruthSource, decision: RouteDecision, capabilityIds: Array<string>, };
+
 export type CapabilityCatalog = { apiVersion: ApiVersion, kind: CatalogKind, resourceVersion: number, items: Array<Capability>, };
 
 export type CapabilityPolicy = { apiVersion: ApiVersion, kind: PolicyKind, metadata: PolicyMetadata, spec: PolicySpec, };
@@ -67,3 +75,13 @@ export type ReconcilePlan = { apiVersion: ApiVersion, kind: ReconcilePlanKind, d
 export type ValidationReport = { apiVersion: ApiVersion, kind: ValidationReportKind, ok: boolean, resourceVersion: number, capabilityCount: number, catalogDigest: string, policy: PolicyRef, };
 
 export type ErrorReport = { apiVersion: ApiVersion, kind: ErrorReportKind, ok: boolean, code: ErrorCode, message: string, };
+
+/**
+ * Privacy-safe route evidence. The original query is deliberately absent.
+ */
+export type ShadowObservation = { apiVersion: ApiVersion, kind: ShadowObservationKind, caseId: string, catalogDigest: string, policy: PolicyRef, selector: SelectorRef, predictedDecision: RouteDecision, predictedMatches: Array<RouteMatch>, groundTruth: ShadowGroundTruth, elapsedMicros: number | null, };
+
+/**
+ * Aggregated replay evidence. It carries identities, never raw queries.
+ */
+export type ShadowEvaluation = { apiVersion: ApiVersion, kind: ShadowEvaluationKind, fixtureId: string, fixtureRevision: string, catalogDigest: string, policy: PolicyRef, selector: SelectorRef, groundTruthSource: GroundTruthSource, caseCount: number, exactDecision: number, hitAt1: number, hitAt3: number, falsePositive: number, ambiguous: number, noMatch: number, };

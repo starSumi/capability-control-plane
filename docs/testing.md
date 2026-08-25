@@ -28,6 +28,22 @@ Tests are layered so a green unit test cannot be mistaken for production proof.
    path encodings, oversized Unicode, duplicate resource versions, and hostile
    provider labels remain data and cannot become commands.
 
+## Shadow replay contract
+
+`capctl shadow` replays `fixtures/shadow-heldout.v1alpha1.json` against one
+catalog, policy, and selector configuration. The fixture revision is a BLAKE3
+digest of its canonical metadata, provenance, selector, and query-bearing cases;
+changing any case invalidates the replay. The output records catalog, policy,
+selector, and fixture identities plus aggregate decision/Hit@K/false-positive
+counts. It deliberately omits raw query text and emits no provider reads,
+client mutation, or desired-state changes.
+
+The checked-in seven-case fixture is a seed-only manually reviewed corpus. Its
+`heldOutReview` label is provenance, not an independent production ground truth.
+Promotion requires a separately owned, independently reviewed corpus, native or
+provider actual-use evidence, version/digest slicing, retention/redaction rules,
+and representative query volume. Do not convert this seed result into an SLO.
+
 The protocol validator and generated Schema share the Rust source but do not
 have identical expressive power: byte-oriented and cross-field checks must be
 covered by Rust negative fixtures, while generated schemas are checked for the
