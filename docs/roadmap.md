@@ -16,9 +16,9 @@
 
 ## V1.1: evidence before integration
 
-- [ ] run hosted Linux/Windows/macOS CI on the committed baseline;
-- [x] add byte-compared cross-platform route-golden fan-in (hosted execution
-  remains pending);
+- [x] run hosted Linux/Windows/macOS CI on the committed baseline;
+- [x] validate byte-compared route-golden fan-in on hosted Linux, Windows, and
+  macOS runners;
 - [x] add a seed held-out routing fixture with canonical provenance binding;
 - [x] add shadow observation/evaluation schemas and a non-mutating replay CLI;
 - [ ] calibrate thresholds from measurements rather than magic confidence;
