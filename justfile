@@ -30,6 +30,13 @@ deny:
 audit:
     cargo audit
 
+publication-guard:
+    bash scripts/publication-guard.sh HEAD
+
+install-git-guards:
+    git config --local core.hooksPath .githooks
+    git config --local user.useConfigOnly true
+
 bench-smoke:
     cargo bench -p capability-engine --bench routing -- --test
 

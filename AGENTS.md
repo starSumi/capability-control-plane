@@ -44,6 +44,7 @@ cargo check --workspace --all-targets --locked
 cargo clippy --workspace --all-targets --all-features --locked -- -D warnings
 cargo test --workspace --all-features --locked
 cargo deny check
+just publication-guard
 ```
 
 Run `cargo audit` when advisory network access is available and

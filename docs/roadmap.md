@@ -11,7 +11,7 @@
 - [x] Rust semantic SSOT with checked JSON Schema and TypeScript projections.
 - [x] honest working-set contract: `N <= 10,000` bounded admission, with
   `topK` bounded output rather than an O(K) score workspace claim.
-- [x] first reviewed root commit (`c830972`) with no remote or runtime
+- [x] first reviewed root commit (`cf1bf24`) with no runtime
   authority; this is a reproducible baseline, not a release.
 
 ## V1.1: evidence before integration

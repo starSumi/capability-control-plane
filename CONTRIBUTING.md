@@ -16,3 +16,9 @@ Commits should be reviewable and must not include secrets, local absolute paths,
 generated benchmark noise, editor state, or unrelated formatting. Dependency
 changes require license/source/advisory review and a committed lockfile.
 
+Before the first public push, run `just install-git-guards`. The tracked
+`pre-push` hook and `just publication-guard` audit author and committer identities
+across the exact commits being published. GitHub noreply identities pass by
+default. Add an address to `.github/public-emails.txt` only when the owner has
+deliberately made it public; never disable provider privacy protection merely to
+make a push pass.
