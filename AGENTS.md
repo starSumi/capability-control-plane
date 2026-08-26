@@ -2,7 +2,7 @@
 
 This repository owns a generic open-source capability discovery and planning
 kernel. It must not depend on personal paths, client loader roots, `.momo`, or
-`D:/DevConfig` at runtime.
+machine-local control-plane directories at runtime.
 
 ## Startup
 

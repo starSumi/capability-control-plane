@@ -2,11 +2,10 @@
 
 ## Scope and authority
 
-This repository is an independent open-source kernel under
-`E:/Zero_Base/playground/capability-control-plane`. It does not import the
-personal control-plane at `D:/DevConfig/agent-control-plane`, Codex home
-directories, Claude loader roots, or `.momo` at runtime. Those systems may later
-own an explicit provider adapter; V1 has none.
+This repository is an independent open-source kernel. It does not import a
+personal control-plane, Codex home directories, Claude loader roots, or local
+operator workspaces at runtime. Those systems may later own an explicit provider
+adapter; V1 has none.
 
 The control plane is a derived decision surface, not a second source registry:
 

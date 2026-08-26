@@ -85,9 +85,8 @@ const architectureHtml = await readFile(
   "utf8",
 );
 if (
-  !architectureHtml.includes(
-    "This repository is an independent open-source kernel under",
-  ) ||
+  !/<h1\b[^>]*>Architecture<\/h1>/u.test(architectureHtml) ||
+  !architectureHtml.includes('id="scope-and-authority"') ||
   !architectureHtml.includes("The control plane is a derived decision surface")
 ) {
   throw new Error("Human architecture route does not render canonical content.");
