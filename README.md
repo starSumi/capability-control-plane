@@ -54,7 +54,7 @@ cargo run -p capctl --locked -- route `
   --root . `
   --catalog fixtures/catalog.v1alpha1.json `
   --policy fixtures/policy.v1alpha1.json `
-  --query "恢复会话并接续上下文"
+  --query "resume session and recover conversation context"
 
 cargo run -p capctl --locked -- reconcile `
   --root . `
